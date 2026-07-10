@@ -1,5 +1,3 @@
-// client/lib/finance.ts
-
 export type Compounding = "monthly" | "quarterly" | "annually" | "maturity";
 
 const periodsPerYear: Record<Exclude<Compounding, "maturity">, number> = {
