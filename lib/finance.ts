@@ -16,11 +16,17 @@ export function maturityValue(
   const r = annualRatePercent / 100;
   const t = tenureMonths / 12;
 
+  let rawMaturity: number;
+
   if (compounding === "maturity") {
-    return principal * (1 + r * t);
+    rawMaturity = principal * (1 + r * t);
+  } else {
+    const n = periodsPerYear[compounding];
+    rawMaturity = principal * Math.pow(1 + r / n, n * t);
   }
-  const n = periodsPerYear[compounding];
-  return principal * Math.pow(1 + r / n, n * t);
+
+  // fix floating-point issues by rounding to 2 decimal places
+  return Math.round((rawMaturity + Number.EPSILON) * 100) / 100;
 }
 
 // interest earned over tenure
@@ -30,13 +36,13 @@ export function interestEarned(
   tenureMonths: number,
   compounding: Compounding,
 ): number {
-  return (
+  const earned =
     maturityValue(principal, annualRatePercent, tenureMonths, compounding) -
-    principal
-  );
+    principal;
+  return Math.round((earned + Number.EPSILON) * 100) / 100;
 }
 
-// Month-by-month balance, for charting. Includes month 0 (= principal)
+// month-by-month balance, for charting. Includes month 0 (= principal)
 export function growthSeries(
   principal: number,
   annualRatePercent: number,
@@ -47,15 +53,36 @@ export function growthSeries(
   const series: { month: number; balance: number }[] = [];
 
   for (let m = 0; m <= tenureMonths; m++) {
-    const years = m / 12;
     let balance: number;
+
+    // for absolute final month of the timeline
+    if (m === tenureMonths) {
+      // use the precise banking method for the endpoint
+      balance = maturityValue(
+        principal,
+        annualRatePercent,
+        tenureMonths,
+        compounding,
+      );
+      series.push({ month: m, balance });
+      continue;
+    }
+
+    // intermediate months generate a smooth curve for better UI styling
     if (compounding === "maturity") {
-      balance = principal * (1 + r * years);
+      balance = principal * (1 + r * (m / 12));
     } else {
       const n = periodsPerYear[compounding];
-      balance = principal * Math.pow(1 + r / n, n * years);
+      // fractional years create the perfect curve for Recharts / Chart.js
+      const fractionalYears = m / 12;
+      balance = principal * Math.pow(1 + r / n, n * fractionalYears);
     }
-    series.push({ month: m, balance: Math.round(balance * 100) / 100 });
+
+    series.push({
+      month: m,
+      balance: Math.round((balance + Number.EPSILON) * 100) / 100,
+    });
   }
+
   return series;
 }
