@@ -1,5 +1,11 @@
 "use client";
 import { useState } from "react";
+import {
+  growthSeries,
+  interestEarned as calculateInterestEarned,
+  maturityValue as calculateMaturityValue,
+  Compounding,
+} from "@/lib/finance";
 
 const Calculator = () => {
   const compoundTypes = ["monthly", "quarterly", "annually", "maturity"];
@@ -11,6 +17,8 @@ const Calculator = () => {
   };
 
   const [formData, setFormData] = useState(defaultState);
+  const [maturityValue, setMaturityValue] = useState("");
+  const [interestEarned, setInterestEarned] = useState("");
 
   const isValidNumber = (key: string, currentValue: string): boolean => {
     if (/^\d$/.test(key)) return true;
@@ -44,6 +52,34 @@ const Calculator = () => {
   };
 
   const handleReset = () => setFormData(defaultState);
+
+  const { principal, annualRate, tenureLength, compoundType } = formData;
+
+  const getMaturityValue = () => {
+    setMaturityValue(
+      String(
+        calculateMaturityValue(
+          Number(principal),
+          Number(annualRate),
+          Number(tenureLength),
+          compoundType as Compounding,
+        ),
+      ),
+    );
+  };
+
+  const getInterestEarned = () => {
+    setInterestEarned(
+      String(
+        calculateInterestEarned(
+          Number(principal),
+          Number(annualRate),
+          Number(tenureLength),
+          compoundType as Compounding,
+        ),
+      ),
+    );
+  };
 
   return (
     <form className="flex flex-col border-2">
@@ -110,18 +146,25 @@ const Calculator = () => {
       <div className="w-9/12 p-2 flex items-center">
         <input type="reset" name="Reset" onClick={handleReset} />
       </div>
+      <div className="w-9/12 p-2 flex items-center">
+        <button
+          name="Calculate"
+          type="button"
+          onClick={() => {
+            getMaturityValue();
+            getInterestEarned();
+          }}
+        >
+          Calculate
+        </button>
+      </div>
 
       <div className="p-2">
         <h1>
           <u>Summary</u>
         </h1>
-        <h1>Principal: {formData.principal || "0.00"}</h1>
-        <h1>Annual Rate: {formData.annualRate || 0}% `</h1>
-        <h1>
-          Tenure: {formData.tenureLength || 0}{" "}
-          {parseInt(formData?.tenureLength) === 1 ? "month" : "months"}
-        </h1>
-        <h1>Compound Type: {formData.compoundType || 0}</h1>
+        <h1>Maturity value: {maturityValue ? maturityValue : "0"}</h1>
+        <h1>Interest Earned: {interestEarned ? interestEarned : "0"}</h1>
       </div>
     </form>
   );
