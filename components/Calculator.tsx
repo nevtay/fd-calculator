@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   growthSeries,
   interestEarned as calculateInterestEarned,
@@ -36,7 +36,9 @@ const Calculator = () => {
       "Home",
       "End",
     ];
+    const isSelectAll = (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "a";
     if (
+      !isSelectAll &&
       !allowedKeys.includes(e.key) &&
       !isValidNumber(e.key, e.currentTarget.value)
     ) {
@@ -51,7 +53,11 @@ const Calculator = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleReset = () => setFormData(defaultState);
+  const handleReset = () => {
+    setFormData(defaultState);
+    setInterestEarned("-");
+    setMaturityValue("-");
+  };
 
   const { principal, annualRate, tenureLength, compoundType } = formData;
 
@@ -81,6 +87,21 @@ const Calculator = () => {
     );
   };
 
+  useEffect(() => {
+    if (!formData.principal || !formData.annualRate || !formData.tenureLength) {
+      setMaturityValue("-");
+      setInterestEarned("-");
+    } else {
+      getInterestEarned();
+      getMaturityValue();
+    }
+  }, [
+    formData.principal,
+    formData.annualRate,
+    formData.tenureLength,
+    formData.compoundType,
+  ]);
+
   return (
     <form className="flex flex-col border-2">
       <div className="w-9/12 p-2 flex items-center">
@@ -95,7 +116,9 @@ const Calculator = () => {
           inputMode="numeric"
           defaultValue={formData.principal}
           onKeyDown={handleKeyDown}
-          onChange={handleChange}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            handleChange(e);
+          }}
         />
       </div>
       <div className="w-9/12 p-2 flex items-center">
@@ -110,7 +133,9 @@ const Calculator = () => {
           inputMode="numeric"
           defaultValue={formData.annualRate}
           onKeyDown={handleKeyDown}
-          onChange={handleChange}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            handleChange(e);
+          }}
         />
       </div>
       <div className="w-9/12 p-2 flex items-center">
@@ -125,7 +150,9 @@ const Calculator = () => {
           inputMode="numeric"
           defaultValue={formData.tenureLength}
           onKeyDown={handleKeyDown}
-          onChange={handleChange}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            handleChange(e);
+          }}
         />
       </div>
       <div className="w-9/12 p-2 flex items-center">
@@ -136,7 +163,9 @@ const Calculator = () => {
           name="compoundType"
           title="compoundType"
           defaultValue={formData.compoundType}
-          onChange={handleChange}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+            handleChange(e);
+          }}
         >
           {compoundTypes.map((type) => {
             return <option key={type}>{type}</option>;
@@ -146,25 +175,18 @@ const Calculator = () => {
       <div className="w-9/12 p-2 flex items-center">
         <input type="reset" name="Reset" onClick={handleReset} />
       </div>
-      <div className="w-9/12 p-2 flex items-center">
-        <button
-          name="Calculate"
-          type="button"
-          onClick={() => {
-            getMaturityValue();
-            getInterestEarned();
-          }}
-        >
-          Calculate
-        </button>
-      </div>
 
       <div className="p-2">
         <h1>
           <u>Summary</u>
         </h1>
-        <h1>Maturity value: {maturityValue ? maturityValue : "0"}</h1>
-        <h1>Interest Earned: {interestEarned ? interestEarned : "0"}</h1>
+        <h1>
+          Maturity value: {maturityValue ? maturityValue.toLocaleString() : "-"}
+        </h1>
+        <h1>
+          Interest Earned:{" "}
+          {interestEarned ? interestEarned.toLocaleString() : "-"}
+        </h1>
       </div>
     </form>
   );
