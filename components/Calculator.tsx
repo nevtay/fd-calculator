@@ -63,27 +63,23 @@ const Calculator = () => {
 
   const getMaturityValue = () => {
     setMaturityValue(
-      String(
-        calculateMaturityValue(
-          Number(principal),
-          Number(annualRate),
-          Number(tenureLength),
-          compoundType as Compounding,
-        ),
-      ),
+      calculateMaturityValue(
+        Number(principal),
+        Number(annualRate),
+        Number(tenureLength),
+        compoundType as Compounding,
+      ).toLocaleString(),
     );
   };
 
   const getInterestEarned = () => {
     setInterestEarned(
-      String(
-        calculateInterestEarned(
-          Number(principal),
-          Number(annualRate),
-          Number(tenureLength),
-          compoundType as Compounding,
-        ),
-      ),
+      calculateInterestEarned(
+        Number(principal),
+        Number(annualRate),
+        Number(tenureLength),
+        compoundType as Compounding,
+      ).toLocaleString(),
     );
   };
 
@@ -180,13 +176,8 @@ const Calculator = () => {
         <h1>
           <u>Summary</u>
         </h1>
-        <h1>
-          Maturity value: {maturityValue ? maturityValue.toLocaleString() : "-"}
-        </h1>
-        <h1>
-          Interest Earned:{" "}
-          {interestEarned ? interestEarned.toLocaleString() : "-"}
-        </h1>
+        <h1>Maturity value: {maturityValue ? maturityValue : "-"}</h1>
+        <h1>Interest Earned: {interestEarned ? interestEarned : "-"}</h1>
       </div>
     </form>
   );
