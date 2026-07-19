@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { ThemeToggle } from "./Theme/ThemeToggle";
 import {
   growthSeries,
   interestEarned as calculateInterestEarned,
