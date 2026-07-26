@@ -100,87 +100,110 @@ const Calculator = () => {
   ]);
 
   return (
-    <form className="flex flex-col border-2">
-      <div className="w-9/12 p-2 flex items-center">
-        <label className="w-4/12 mr-2" htmlFor="principal">
-          Principal
-        </label>
+    <>
+      <form className="flex flex-row flex-wrap gap-12.5">
+        <div className="min-w-4/12 pt-2.5 pb-5 px-5 flex flex-col border-2 gap-3 dark:bg-input-bg rounded-3xl">
+          <label
+            className="text-(--color-indigo) text-[24px]"
+            htmlFor="principal"
+          >
+            Principal
+          </label>
+          <input
+            className="border-2 text-(--color-body-text)"
+            title="principal"
+            name="principal"
+            type="text"
+            inputMode="numeric"
+            defaultValue={formData.principal}
+            onKeyDown={handleKeyDown}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              handleChange(e);
+            }}
+          />
+        </div>
+        <div className="min-w-2/12 pt-2.5 pb-5 px-5 flex flex-col gap-3 dark:bg-input-bg rounded-3xl">
+          <label
+            className="text-(--color-indigo) text-[24px]"
+            htmlFor="annualRate"
+          >
+            Rate
+          </label>
+          <input
+            className="border-2 text-(--color-body-text)"
+            title="annualRate"
+            name="annualRate"
+            type="text"
+            inputMode="numeric"
+            defaultValue={formData.annualRate}
+            onKeyDown={handleKeyDown}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              handleChange(e);
+            }}
+          />
+        </div>
+        <div className="min-w-3/12 pt-2.5 pb-5 px-5 flex flex-col gap-3 dark:bg-input-bg rounded-3xl">
+          <label
+            className="text-(--color-indigo) text-[24px]"
+            htmlFor="tenureLength"
+          >
+            Tenure Length (months)
+          </label>
+          <input
+            className="border-2 text-(--color-body-text)"
+            title="tenureLength"
+            name="tenureLength"
+            type="text"
+            inputMode="numeric"
+            defaultValue={formData.tenureLength}
+            onKeyDown={handleKeyDown}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              handleChange(e);
+            }}
+          />
+        </div>
+        <div className="max-h-30 min-w-3/12 pt-2.5 pb-5 px-5 flex flex-col justify-center  gap-3 dark:bg-input-bg rounded-3xl">
+          <label
+            className="text-(--color-indigo) text-[24px]"
+            htmlFor="compoundType"
+          >
+            Compound Type
+          </label>
+          <select
+            name="compoundType"
+            defaultValue={formData.compoundType}
+            className="p-0 m-0 border-2 text-(--color-body-text)"
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              handleChange(e);
+            }}
+            title="compoundType"
+          >
+            {compoundTypes.map((type) => {
+              return (
+                <option className="text-(--color-body-text)" key={type}>
+                  {type}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+        <div className="w-5/12 pt-2.5 pb-5 px-5 flex items-center dark:bg-input-bg rounded-3xl">
+          <div className="min-w-7/12 text-(--color-body-text)">
+            <h1 className="text-(--color-indigo) text-[24px]">
+              <u>Summary</u>
+            </h1>
+            <h1>Maturity value: {maturityValue ? maturityValue : "-"}</h1>
+            <h1>Interest Earned: {interestEarned ? interestEarned : "-"}</h1>
+          </div>
+        </div>
         <input
-          className="border-2"
-          title="principal"
-          name="principal"
-          type="text"
-          inputMode="numeric"
-          defaultValue={formData.principal}
-          onKeyDown={handleKeyDown}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            handleChange(e);
-          }}
+          className="mt-5 cursor-pointer"
+          type="reset"
+          name="Reset"
+          onClick={handleReset}
         />
-      </div>
-      <div className="w-9/12 p-2 flex items-center">
-        <label className="w-4/12 mr-2" htmlFor="annualRate">
-          Rate
-        </label>
-        <input
-          className="border-2"
-          title="annualRate"
-          name="annualRate"
-          type="text"
-          inputMode="numeric"
-          defaultValue={formData.annualRate}
-          onKeyDown={handleKeyDown}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            handleChange(e);
-          }}
-        />
-      </div>
-      <div className="w-9/12 p-2 flex items-center">
-        <label className="w-4/12 mr-2" htmlFor="tenureLength">
-          Tenure Length (months)
-        </label>
-        <input
-          className="border-2"
-          title="tenureLength"
-          name="tenureLength"
-          type="text"
-          inputMode="numeric"
-          defaultValue={formData.tenureLength}
-          onKeyDown={handleKeyDown}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            handleChange(e);
-          }}
-        />
-      </div>
-      <div className="w-9/12 p-2 flex items-center">
-        <label className="w-4/12 mr-2" htmlFor="compoundType">
-          Compound Type
-        </label>
-        <select
-          name="compoundType"
-          title="compoundType"
-          defaultValue={formData.compoundType}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-            handleChange(e);
-          }}
-        >
-          {compoundTypes.map((type) => {
-            return <option key={type}>{type}</option>;
-          })}
-        </select>
-      </div>
-      <div className="w-9/12 p-2 flex items-center">
-        <input type="reset" name="Reset" onClick={handleReset} />
-      </div>
-
-      <div className="p-2">
-        <h1>
-          <u>Summary</u>
-        </h1>
-        <h1>Maturity value: {maturityValue ? maturityValue : "-"}</h1>
-        <h1>Interest Earned: {interestEarned ? interestEarned : "-"}</h1>
-      </div>
-    </form>
+      </form>
+    </>
   );
 };
 

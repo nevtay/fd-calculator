@@ -4,9 +4,13 @@ import { ThemeToggle } from "@/components/Theme/ThemeToggle";
 export default function Home() {
   return (
     <div>
-      <h1>FD Calculator</h1>
       <ThemeToggle />
-      <Calculator />
+      <div className="min-h-screen px-12 py-12">
+        <h1 className="text-(--color-indigo) font-semibold text-5xl mb-12">
+          Fixed Deposit Calculator
+        </h1>
+        <Calculator />
+      </div>
     </div>
   );
 }
