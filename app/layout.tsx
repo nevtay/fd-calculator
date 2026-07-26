@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
+import { Albert_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/Theme/theme-provider";
 import "./globals.css";
+
+const albertSans = Albert_Sans({
+  subsets: ["latin"],
+  fallback: ["sans-serif"],
+});
 
 export const metadata: Metadata = {
   title: "Fixed Deposit Calculator",
@@ -15,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-full border-2 dark:bg-neutral-800">
+      <body className={albertSans.className}>
         <ThemeProvider attribute={"class"} defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>
