@@ -8,13 +8,26 @@ import {
   Compounding,
 } from "@/lib/finance";
 
+export interface CompoundTypes {
+  monthly: "monthly";
+  quarterly: "quarterly";
+  annually: "annually";
+  maturity: "maturity";
+}
+
 const Calculator = () => {
-  const compoundTypes = ["monthly", "quarterly", "annually", "maturity"];
+  const compoundTypes = {
+    monthly: "monthly",
+    quarterly: "quarterly",
+    annually: "annually",
+    maturity: "maturity",
+  } as CompoundTypes;
+
   const defaultState = {
     principal: "",
     annualRate: "",
     tenureLength: "",
-    compoundType: "monthly",
+    compoundType: compoundTypes.monthly,
   };
 
   const [formData, setFormData] = useState(defaultState);
@@ -63,25 +76,31 @@ const Calculator = () => {
   const { principal, annualRate, tenureLength, compoundType } = formData;
 
   const getMaturityValue = () => {
-    setMaturityValue(
-      calculateMaturityValue(
-        Number(principal),
-        Number(annualRate),
-        Number(tenureLength),
-        compoundType as Compounding,
-      ).toLocaleString(),
-    );
+    const result = calculateMaturityValue(
+      Number(principal),
+      Number(annualRate),
+      Number(tenureLength),
+      compoundType as Compounding,
+    ).toLocaleString();
+    if (result && result.length > 15) {
+      setMaturityValue(result.slice(0, 15) + "...");
+    } else if (result && result.length <= 15) {
+      setMaturityValue(result);
+    }
   };
 
   const getInterestEarned = () => {
-    setInterestEarned(
-      calculateInterestEarned(
-        Number(principal),
-        Number(annualRate),
-        Number(tenureLength),
-        compoundType as Compounding,
-      ).toLocaleString(),
-    );
+    const result = calculateInterestEarned(
+      Number(principal),
+      Number(annualRate),
+      Number(tenureLength),
+      compoundType as Compounding,
+    ).toLocaleString();
+    if (result && result.length > 15) {
+      setInterestEarned(result.slice(0, 15) + "...");
+    } else if (result && result.length <= 15) {
+      setInterestEarned(result);
+    }
   };
 
   useEffect(() => {
@@ -102,7 +121,7 @@ const Calculator = () => {
   return (
     <>
       <form className="flex flex-row flex-wrap gap-12.5">
-        <div className="min-w-4/12 pt-2.5 pb-5 px-5 flex flex-col border-2 gap-3 dark:bg-input-bg rounded-3xl">
+        <div className="w-4/12 pt-3.5 pb-6 px-5 flex flex-col justify-evenly gap-3 bg-input-container rounded-3xl">
           <label
             className="text-(--color-indigo) text-[24px]"
             htmlFor="principal"
@@ -110,7 +129,7 @@ const Calculator = () => {
             Principal
           </label>
           <input
-            className="border-2 text-(--color-body-text)"
+            className="bg-none border-b-2 outline-0 text-input-value"
             title="principal"
             name="principal"
             type="text"
@@ -122,27 +141,7 @@ const Calculator = () => {
             }}
           />
         </div>
-        <div className="min-w-2/12 pt-2.5 pb-5 px-5 flex flex-col gap-3 dark:bg-input-bg rounded-3xl">
-          <label
-            className="text-(--color-indigo) text-[24px]"
-            htmlFor="annualRate"
-          >
-            Rate
-          </label>
-          <input
-            className="border-2 text-(--color-body-text)"
-            title="annualRate"
-            name="annualRate"
-            type="text"
-            inputMode="numeric"
-            defaultValue={formData.annualRate}
-            onKeyDown={handleKeyDown}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              handleChange(e);
-            }}
-          />
-        </div>
-        <div className="min-w-3/12 pt-2.5 pb-5 px-5 flex flex-col gap-3 dark:bg-input-bg rounded-3xl">
+        <div className="w-auto pt-3.5 pb-6 px-5 flex flex-col justify-evenly gap-3 bg-input-container rounded-3xl">
           <label
             className="text-(--color-indigo) text-[24px]"
             htmlFor="tenureLength"
@@ -150,7 +149,7 @@ const Calculator = () => {
             Tenure Length (months)
           </label>
           <input
-            className="border-2 text-(--color-body-text)"
+            className="bg-none border-b-2 outline-0 text-input-value"
             title="tenureLength"
             name="tenureLength"
             type="text"
@@ -162,42 +161,75 @@ const Calculator = () => {
             }}
           />
         </div>
-        <div className="max-h-30 min-w-3/12 pt-2.5 pb-5 px-5 flex flex-col justify-center  gap-3 dark:bg-input-bg rounded-3xl">
+        <div className="w-auto pt-3.5 pb-6 px-5 flex flex-col justify-evenly gap-3 bg-input-container rounded-3xl">
+          <label
+            className="text-(--color-indigo) text-[24px]"
+            htmlFor="annualRate"
+          >
+            Annual Rate (%)
+          </label>
+          <input
+            className="bg-none border-b-2 outline-0 text-input-value"
+            title="annualRate"
+            name="annualRate"
+            type="text"
+            inputMode="numeric"
+            defaultValue={formData.annualRate}
+            onKeyDown={handleKeyDown}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              handleChange(e);
+            }}
+          />
+        </div>
+        <div className="max-h-30 min-w-auto pt-3.5 pb-6 px-5 flex flex-col justify-evenly gap-3 bg-input-container rounded-3xl">
           <label
             className="text-(--color-indigo) text-[24px]"
             htmlFor="compoundType"
           >
             Compound Type
           </label>
-          <select
-            name="compoundType"
-            defaultValue={formData.compoundType}
-            className="p-0 m-0 border-2 text-(--color-body-text)"
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-              handleChange(e);
-            }}
-            title="compoundType"
-          >
-            {compoundTypes.map((type) => {
-              return (
-                <option className="text-(--color-body-text)" key={type}>
-                  {type}
-                </option>
-              );
-            })}
-          </select>
+          <div className="relative">
+            <select
+              name="compoundType"
+              defaultValue={formData.compoundType}
+              className="m-0 w-full border-b-2 pr-8 outline-0 text-input-value appearance-none"
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                handleChange(e);
+              }}
+              title="compoundType"
+            >
+              {Object.keys(compoundTypes).map((type) => {
+                return (
+                  <option className="text-input-value" key={type}>
+                    {type}
+                  </option>
+                );
+              })}
+            </select>
+            <svg
+              className="pointer-events-none absolute right-2 top-1/2 size-4 -translate-y-1/2 text-(--color-indigo)"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path d="M5.25 7.5L10 12.25L14.75 7.5H5.25Z" />
+            </svg>
+          </div>
         </div>
-        <div className="w-5/12 pt-2.5 pb-5 px-5 flex items-center dark:bg-input-bg rounded-3xl">
+        <div className="w-5/12 pt-3.5 pb-6 px-5 flex items-center bg-input-container rounded-3xl">
           <div className="min-w-7/12 text-(--color-body-text)">
             <h1 className="text-(--color-indigo) text-[24px]">
               <u>Summary</u>
             </h1>
-            <h1>Maturity value: {maturityValue ? maturityValue : "-"}</h1>
-            <h1>Interest Earned: {interestEarned ? interestEarned : "-"}</h1>
+            <h1 className="text-(--color-body-text)">
+              Maturity value: {maturityValue ? maturityValue : "-"}
+            </h1>
+            <h1 className="text-(--color-body-text)">
+              Interest Earned: {interestEarned ? interestEarned : "-"}
+            </h1>
           </div>
         </div>
         <input
-          className="mt-5 cursor-pointer"
+          className="mt-5 cursor-pointer bg-input-container text-(--color-body-text) h-fit px-6 py-2 rounded-xl"
           type="reset"
           name="Reset"
           onClick={handleReset}
