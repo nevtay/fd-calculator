@@ -21,7 +21,7 @@ export function ThemeToggle() {
   return (
     <button
       aria-label="Toggle Theme"
-      className="p-2 border rounded-md cursor-pointer bg-neutral-100 dark:bg-neutral-800 dark:text-amber-300 text-purple-500 w-50 ml-auto"
+      className="p-2 border rounded-md cursor-pointer bg-neutral-100 dark:bg-neutral-800 dark:text-amber-300 text-purple-500 w-fit h-fit"
       onClick={(e) => {
         e.preventDefault();
         setTheme(theme === "dark" ? "light" : "dark");
