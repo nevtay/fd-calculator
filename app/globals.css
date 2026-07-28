@@ -5,28 +5,31 @@
 @theme {
   --color-background: var(--bg-app);
   --color-foreground: var(--text-app);
-  --color-input-bg: var(--bg-input);
+  --color-input-field: var(--bg-input-field);
+  --color-input-container: var(--bg-input-container);
   --color-input-value: var(--text-input-value);
   --color-label: var(--text-label);
   --color-accent: var(--color-indigo);
 }
 
 :root {
-  --bg-app: #f3f4f6;
-  --color-body-text: #111827;
-  --bg-input: #2a2a2a;
-  --text-input-value: #f3f4f6;
-  --text-label: #a1a1a1;
+  --bg-app: #d6d9d7;
+  --bg-input-container: #2a2a2a;
+  --bg-input-field: #f3f4f6;
+  --color-body-text: #f3f4f6;
   --color-indigo: #6366f1;
+  --text-input-value: #d6d9d7;
+  --text-label: #a1a1a1;
 }
 
 :root.dark {
   --bg-app: #1a1a1a;
-  --color-body-text: #111827;
-  --bg-input: #d9d9d9;
-  --text-input-value: #222222;
-  --text-label: #6b6b6b;
+  --bg-input-container: #160a0a;
+  --bg-input-field: #e5e2e2;
+  --color-body-text: #f3f4f6;
   --color-indigo: #6366f1;
+  --text-input-value: #d6d9d7;
+  --text-label: #6b6b6b;
 }
 
 @layer base {
