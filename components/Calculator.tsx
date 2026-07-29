@@ -81,9 +81,9 @@ const Calculator = () => {
       Number(annualRate),
       Number(tenureLength),
       compoundType as Compounding,
-    ).toLocaleString();
+    ).toLocaleString("en-US", { maximumFractionDigits: 2 });
     if (result && result.length > 15) {
-      setMaturityValue(result.slice(0, 15) + "...");
+      setMaturityValue(result.slice(0, 15) + " ...");
     } else if (result && result.length <= 15) {
       setMaturityValue(result);
     }
@@ -95,9 +95,10 @@ const Calculator = () => {
       Number(annualRate),
       Number(tenureLength),
       compoundType as Compounding,
-    ).toLocaleString();
+    ).toLocaleString("en-US", { maximumFractionDigits: 2 });
+
     if (result && result.length > 15) {
-      setInterestEarned(result.slice(0, 15) + "...");
+      setInterestEarned(result.slice(0, 15) + " ...");
     } else if (result && result.length <= 15) {
       setInterestEarned(result);
     }
@@ -121,7 +122,7 @@ const Calculator = () => {
   return (
     <>
       <form className="flex flex-row flex-wrap gap-12.5">
-        <div className="w-4/12 pt-3.5 pb-6 px-5 flex flex-col justify-evenly gap-3 bg-input-container rounded-3xl">
+        <div className="w-4/12 max-md:w-12/12 pt-3.5 pb-6 px-5 flex flex-col justify-evenly gap-3 bg-input-container rounded-3xl">
           <label
             className="text-(--color-indigo) text-[24px]"
             htmlFor="principal"
@@ -141,7 +142,7 @@ const Calculator = () => {
             }}
           />
         </div>
-        <div className="w-auto pt-3.5 pb-6 px-5 flex flex-col justify-evenly gap-3 bg-input-container rounded-3xl">
+        <div className="w-auto max-md:w-12/12 pt-3.5 pb-6 px-5 flex flex-col justify-evenly gap-3 bg-input-container rounded-3xl">
           <label
             className="text-(--color-indigo) text-[24px]"
             htmlFor="tenureLength"
@@ -161,7 +162,7 @@ const Calculator = () => {
             }}
           />
         </div>
-        <div className="w-auto pt-3.5 pb-6 px-5 flex flex-col justify-evenly gap-3 bg-input-container rounded-3xl">
+        <div className="w-auto max-md:w-12/12 pt-3.5 pb-6 px-5 flex flex-col justify-evenly gap-3 bg-input-container rounded-3xl">
           <label
             className="text-(--color-indigo) text-[24px]"
             htmlFor="annualRate"
@@ -181,7 +182,7 @@ const Calculator = () => {
             }}
           />
         </div>
-        <div className="max-h-30 min-w-auto pt-3.5 pb-6 px-5 flex flex-col justify-evenly gap-3 bg-input-container rounded-3xl">
+        <div className="min-w-auto max-md:w-12/12 pt-3.5 pb-6 px-5 flex flex-col justify-evenly gap-3 bg-input-container rounded-3xl">
           <label
             className="text-(--color-indigo) text-[24px]"
             htmlFor="compoundType"
@@ -215,7 +216,7 @@ const Calculator = () => {
             </svg>
           </div>
         </div>
-        <div className="w-5/12 pt-3.5 pb-6 px-5 flex items-center bg-input-container rounded-3xl">
+        <div className="w-5/12 max-md:w-12/12 pt-3.5 pb-6 px-5 flex items-center bg-input-container rounded-3xl">
           <div className="min-w-7/12 text-(--color-body-text)">
             <h1 className="text-(--color-indigo) text-[24px]">
               <u>Summary</u>
