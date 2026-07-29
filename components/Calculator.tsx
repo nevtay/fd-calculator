@@ -122,15 +122,19 @@ const Calculator = () => {
   return (
     <>
       <form className="flex flex-row flex-wrap gap-12.5">
-        <div className="bg-input-container flex w-4/12 flex-col justify-evenly gap-3 rounded-3xl px-5 pt-3.5 pb-6 max-md:w-12/12">
+        <div className="bg-input-container flex w-4/12 flex-col justify-evenly gap-3 rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:w-12/12">
           <label
-            className="text-[24px] text-(--color-indigo)"
+            className="text-[24px] font-semibold text-(--color-indigo) text-shadow-[.6px_.60px_0.25px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
             htmlFor="principal"
           >
             Principal
           </label>
+          <label
+            className="text-[24px] font-semibold text-(--color-indigo) text-shadow-[.6px_.60px_0.25px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
+            htmlFor="principal"
+          ></label>
           <input
-            className="text-input-value border-b-2 bg-none outline-0"
+            className="text-input-value border-b-2 bg-none outline-0 text-shadow-[-1px_-1px_1px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
             title="principal"
             name="principal"
             type="text"
@@ -142,15 +146,15 @@ const Calculator = () => {
             }}
           />
         </div>
-        <div className="bg-input-container flex w-auto flex-col justify-evenly gap-3 rounded-3xl px-5 pt-3.5 pb-6 max-md:w-12/12">
+        <div className="bg-input-container flex w-auto flex-col justify-evenly gap-3 rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:w-12/12">
           <label
-            className="text-[24px] text-(--color-indigo)"
+            className="text-[24px] font-semibold text-(--color-indigo) text-shadow-[.6px_.60px_0.25px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
             htmlFor="tenureLength"
           >
             Tenure Length (months)
           </label>
           <input
-            className="text-input-value border-b-2 bg-none outline-0"
+            className="text-input-value border-b-2 bg-none outline-0 text-shadow-[-1px_-1px_1px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
             title="tenureLength"
             name="tenureLength"
             type="text"
@@ -162,15 +166,15 @@ const Calculator = () => {
             }}
           />
         </div>
-        <div className="bg-input-container flex w-auto flex-col justify-evenly gap-3 rounded-3xl px-5 pt-3.5 pb-6 max-md:w-12/12">
+        <div className="bg-input-container flex w-auto flex-col justify-evenly gap-3 rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:w-12/12">
           <label
-            className="text-[24px] text-(--color-indigo)"
+            className="text-[24px] font-semibold text-(--color-indigo) text-shadow-[.6px_.60px_0.25px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
             htmlFor="annualRate"
           >
             Annual Rate (%)
           </label>
           <input
-            className="text-input-value border-b-2 bg-none outline-0"
+            className="text-input-value border-b-2 bg-none outline-0 text-shadow-[-1px_-1px_1px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
             title="annualRate"
             name="annualRate"
             type="text"
@@ -182,9 +186,9 @@ const Calculator = () => {
             }}
           />
         </div>
-        <div className="bg-input-container flex min-w-auto flex-col justify-evenly gap-3 rounded-3xl px-5 pt-3.5 pb-6 max-md:w-12/12">
+        <div className="bg-input-container flex min-w-auto flex-col justify-evenly gap-3 rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:w-12/12">
           <label
-            className="text-[24px] text-(--color-indigo)"
+            className="text-[24px] font-semibold text-(--color-indigo) text-shadow-[.6px_.60px_0.25px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
             htmlFor="compoundType"
           >
             Compound Type
@@ -193,7 +197,7 @@ const Calculator = () => {
             <select
               name="compoundType"
               defaultValue={formData.compoundType}
-              className="text-input-value m-0 w-full appearance-none border-b-2 pr-8 outline-0"
+              className="text-input-value m-0 w-full appearance-none border-b-2 pr-8 outline-0 text-shadow-[-1px_-1px_1px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 handleChange(e);
               }}
@@ -201,7 +205,10 @@ const Calculator = () => {
             >
               {Object.keys(compoundTypes).map((type) => {
                 return (
-                  <option className="text-input-value" key={type}>
+                  <option
+                    className="text-input-value text-shadow-[-1px_-1px_1px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
+                    key={type}
+                  >
                     {type}
                   </option>
                 );
@@ -216,9 +223,9 @@ const Calculator = () => {
             </svg>
           </div>
         </div>
-        <div className="bg-input-container flex w-5/12 items-center rounded-3xl px-5 pt-3.5 pb-6 max-md:w-12/12">
-          <div className="min-w-7/12 text-(--color-body-text)">
-            <h1 className="text-[24px] text-(--color-indigo)">
+        <div className="bg-input-container flex w-5/12 items-center rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:w-12/12">
+          <div className="min-w-7/12 text-(--color-body-text) text-shadow-[-1px_-1px_1px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]">
+            <h1 className="text-[24px] font-semibold text-(--color-indigo) text-shadow-[.6px_.60px_0.25px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]">
               <u>Summary</u>
             </h1>
             <h1 className="text-(--color-body-text)">
@@ -229,12 +236,16 @@ const Calculator = () => {
             </h1>
           </div>
         </div>
-        <input
-          className="bg-input-container mt-5 h-fit cursor-pointer rounded-xl px-6 py-2 text-(--color-body-text)"
-          type="reset"
-          name="Reset"
-          onClick={handleReset}
-        />
+        <div className="m-auto mb-8 flex w-12/12">
+          <button
+            className="bg-input-container m-auto h-fit w-auto cursor-pointer rounded-2xl px-6 py-2 text-(--color-body-text) text-shadow-[-1px_-1px_1px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)] hover:scale-90 md:ml-auto"
+            type="reset"
+            name="Reset"
+            onClick={handleReset}
+          >
+            Reset
+          </button>
+        </div>
       </form>
     </>
   );
