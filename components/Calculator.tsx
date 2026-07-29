@@ -81,10 +81,15 @@ const Calculator = () => {
       Number(annualRate),
       Number(tenureLength),
       compoundType as Compounding,
-    ).toLocaleString("en-US", { maximumFractionDigits: 2 });
-    if (result && result.length > 15) {
-      setMaturityValue(result.slice(0, 15) + " ...");
-    } else if (result && result.length <= 15) {
+    ).toLocaleString("en-US", {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2,
+    });
+    if (result && result.length > 20) {
+      setMaturityValue(
+        result.slice(0, 20) + ` ... (${result.length - 20} more digits)`,
+      );
+    } else if (result && result.length <= 20) {
       setMaturityValue(result);
     }
   };
@@ -95,11 +100,16 @@ const Calculator = () => {
       Number(annualRate),
       Number(tenureLength),
       compoundType as Compounding,
-    ).toLocaleString("en-US", { maximumFractionDigits: 2 });
+    ).toLocaleString("en-US", {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2,
+    });
 
-    if (result && result.length > 15) {
-      setInterestEarned(result.slice(0, 15) + " ...");
-    } else if (result && result.length <= 15) {
+    if (result && result.length > 20) {
+      setInterestEarned(
+        result.slice(0, 20) + ` ... (${result.length - 20} more digits)`,
+      );
+    } else if (result && result.length <= 20) {
       setInterestEarned(result);
     }
   };
