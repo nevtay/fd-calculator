@@ -122,15 +122,15 @@ const Calculator = () => {
   return (
     <>
       <form className="flex flex-row flex-wrap gap-12.5">
-        <div className="w-4/12 max-md:w-12/12 pt-3.5 pb-6 px-5 flex flex-col justify-evenly gap-3 bg-input-container rounded-3xl">
+        <div className="bg-input-container flex w-4/12 flex-col justify-evenly gap-3 rounded-3xl px-5 pt-3.5 pb-6 max-md:w-12/12">
           <label
-            className="text-(--color-indigo) text-[24px]"
+            className="text-[24px] text-(--color-indigo)"
             htmlFor="principal"
           >
             Principal
           </label>
           <input
-            className="bg-none border-b-2 outline-0 text-input-value"
+            className="text-input-value border-b-2 bg-none outline-0"
             title="principal"
             name="principal"
             type="text"
@@ -142,15 +142,15 @@ const Calculator = () => {
             }}
           />
         </div>
-        <div className="w-auto max-md:w-12/12 pt-3.5 pb-6 px-5 flex flex-col justify-evenly gap-3 bg-input-container rounded-3xl">
+        <div className="bg-input-container flex w-auto flex-col justify-evenly gap-3 rounded-3xl px-5 pt-3.5 pb-6 max-md:w-12/12">
           <label
-            className="text-(--color-indigo) text-[24px]"
+            className="text-[24px] text-(--color-indigo)"
             htmlFor="tenureLength"
           >
             Tenure Length (months)
           </label>
           <input
-            className="bg-none border-b-2 outline-0 text-input-value"
+            className="text-input-value border-b-2 bg-none outline-0"
             title="tenureLength"
             name="tenureLength"
             type="text"
@@ -162,15 +162,15 @@ const Calculator = () => {
             }}
           />
         </div>
-        <div className="w-auto max-md:w-12/12 pt-3.5 pb-6 px-5 flex flex-col justify-evenly gap-3 bg-input-container rounded-3xl">
+        <div className="bg-input-container flex w-auto flex-col justify-evenly gap-3 rounded-3xl px-5 pt-3.5 pb-6 max-md:w-12/12">
           <label
-            className="text-(--color-indigo) text-[24px]"
+            className="text-[24px] text-(--color-indigo)"
             htmlFor="annualRate"
           >
             Annual Rate (%)
           </label>
           <input
-            className="bg-none border-b-2 outline-0 text-input-value"
+            className="text-input-value border-b-2 bg-none outline-0"
             title="annualRate"
             name="annualRate"
             type="text"
@@ -182,9 +182,9 @@ const Calculator = () => {
             }}
           />
         </div>
-        <div className="min-w-auto max-md:w-12/12 pt-3.5 pb-6 px-5 flex flex-col justify-evenly gap-3 bg-input-container rounded-3xl">
+        <div className="bg-input-container flex min-w-auto flex-col justify-evenly gap-3 rounded-3xl px-5 pt-3.5 pb-6 max-md:w-12/12">
           <label
-            className="text-(--color-indigo) text-[24px]"
+            className="text-[24px] text-(--color-indigo)"
             htmlFor="compoundType"
           >
             Compound Type
@@ -193,7 +193,7 @@ const Calculator = () => {
             <select
               name="compoundType"
               defaultValue={formData.compoundType}
-              className="m-0 w-full border-b-2 pr-8 outline-0 text-input-value appearance-none"
+              className="text-input-value m-0 w-full appearance-none border-b-2 pr-8 outline-0"
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 handleChange(e);
               }}
@@ -208,7 +208,7 @@ const Calculator = () => {
               })}
             </select>
             <svg
-              className="pointer-events-none absolute right-2 top-1/2 size-4 -translate-y-1/2 text-(--color-indigo)"
+              className="pointer-events-none absolute top-1/2 right-2 size-4 -translate-y-1/2 text-(--color-indigo)"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -216,9 +216,9 @@ const Calculator = () => {
             </svg>
           </div>
         </div>
-        <div className="w-5/12 max-md:w-12/12 pt-3.5 pb-6 px-5 flex items-center bg-input-container rounded-3xl">
+        <div className="bg-input-container flex w-5/12 items-center rounded-3xl px-5 pt-3.5 pb-6 max-md:w-12/12">
           <div className="min-w-7/12 text-(--color-body-text)">
-            <h1 className="text-(--color-indigo) text-[24px]">
+            <h1 className="text-[24px] text-(--color-indigo)">
               <u>Summary</u>
             </h1>
             <h1 className="text-(--color-body-text)">
@@ -230,7 +230,7 @@ const Calculator = () => {
           </div>
         </div>
         <input
-          className="mt-5 cursor-pointer bg-input-container text-(--color-body-text) h-fit px-6 py-2 rounded-xl"
+          className="bg-input-container mt-5 h-fit cursor-pointer rounded-xl px-6 py-2 text-(--color-body-text)"
           type="reset"
           name="Reset"
           onClick={handleReset}
