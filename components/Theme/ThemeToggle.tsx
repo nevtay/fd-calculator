@@ -2,10 +2,17 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import "./ThemeToggle.css";
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [isDark, setIsDark] = useState(resolvedTheme?.toLowerCase() === "dark");
+
+  const handleToggle = () => {
+    setIsDark(!isDark);
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
+  };
 
   // Prevent hydration mismatch by waiting until mounted on client
   useEffect(() => {
@@ -17,16 +24,19 @@ export function ThemeToggle() {
   }
 
   return (
-    <button
+    <div
+      className={`skeo-track ${isDark ? "is-dark" : "is-light"} top-[5] right-[10]`}
+      onClick={handleToggle}
+      role="switch"
       aria-label="Toggle Theme"
-      className="h-fit w-fit cursor-pointer rounded-md border bg-neutral-100 p-2 text-purple-500 dark:bg-neutral-800 dark:text-amber-300"
-      onClick={(e) => {
-        e.preventDefault();
-        setTheme(resolvedTheme === "dark" ? "light" : "dark");
-      }}
+      tabIndex={0}
+      onKeyDown={(e) => e.key === "Enter" && handleToggle()}
     >
-      Current Theme:{" "}
-      <span className="font-bold capitalize">{resolvedTheme}</span>
-    </button>
+      <div className="skeo-thumb">
+        <div className="skeo-thumb-inner">
+          {resolvedTheme?.toLowerCase() === "dark" ? "🌑" : "☀️"}
+        </div>
+      </div>
+    </div>
   );
 }
