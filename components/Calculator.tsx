@@ -27,7 +27,7 @@ const Calculator = () => {
     principal: "",
     annualRate: "",
     tenureLength: "",
-    compoundType: compoundTypes.monthly,
+    compoundType: compoundTypes.annually,
   };
 
   const [formData, setFormData] = useState(defaultState);
@@ -38,6 +38,17 @@ const Calculator = () => {
     if (/^\d$/.test(key)) return true;
     if (key === "." && !currentValue.includes(".")) return true;
     return false;
+  };
+
+  // sanitize the resulting value so it's digits only, at most one decimal point.
+  const sanitizeNumericInput = (value: string): string => {
+    const digitsAndDots = value.replace(/[^\d.]/g, "");
+    const firstDotIndex = digitsAndDots.indexOf(".");
+    if (firstDotIndex === -1) return digitsAndDots;
+    return (
+      digitsAndDots.slice(0, firstDotIndex + 1) +
+      digitsAndDots.slice(firstDotIndex + 1).replace(/\./g, "")
+    );
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -64,7 +75,11 @@ const Calculator = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const sanitizedValue =
+      e.target instanceof HTMLInputElement
+        ? sanitizeNumericInput(value)
+        : value;
+    setFormData((prev) => ({ ...prev, [name]: sanitizedValue }));
   };
 
   const handleReset = () => {
@@ -149,7 +164,7 @@ const Calculator = () => {
             name="principal"
             type="text"
             inputMode="numeric"
-            defaultValue={formData.principal}
+            value={formData.principal}
             onKeyDown={handleKeyDown}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               handleChange(e);
@@ -169,7 +184,7 @@ const Calculator = () => {
             name="tenureLength"
             type="text"
             inputMode="numeric"
-            defaultValue={formData.tenureLength}
+            value={formData.tenureLength}
             onKeyDown={handleKeyDown}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               handleChange(e);
@@ -189,7 +204,7 @@ const Calculator = () => {
             name="annualRate"
             type="text"
             inputMode="numeric"
-            defaultValue={formData.annualRate}
+            value={formData.annualRate}
             onKeyDown={handleKeyDown}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               handleChange(e);
