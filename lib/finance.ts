@@ -6,8 +6,7 @@ const periodsPerYear: Record<Exclude<Compounding, "maturity">, number> = {
   annually: 1,
 };
 
-// final value of the deposit at end of tenure
-export function maturityValue(
+function rawMaturityValue(
   principal: number,
   annualRatePercent: number,
   tenureMonths: number,
@@ -16,14 +15,26 @@ export function maturityValue(
   const r = annualRatePercent / 100;
   const t = tenureMonths / 12;
 
-  let rawMaturity: number;
-
   if (compounding === "maturity") {
-    rawMaturity = principal * (1 + r * t);
-  } else {
-    const n = periodsPerYear[compounding];
-    rawMaturity = principal * Math.pow(1 + r / n, n * t);
+    return principal * (1 + r * t);
   }
+  const n = periodsPerYear[compounding];
+  return principal * Math.pow(1 + r / n, n * t);
+}
+
+// final value of the deposit at end of tenure
+export function maturityValue(
+  principal: number,
+  annualRatePercent: number,
+  tenureMonths: number,
+  compounding: Compounding,
+): number {
+  const rawMaturity = rawMaturityValue(
+    principal,
+    annualRatePercent,
+    tenureMonths,
+    compounding,
+  );
 
   // fix floating-point issues by rounding to 2 decimal places
   return Math.round((rawMaturity + Number.EPSILON) * 100) / 100;
@@ -36,10 +47,16 @@ export function interestEarned(
   tenureMonths: number,
   compounding: Compounding,
 ): number {
-  const earned =
-    maturityValue(principal, annualRatePercent, tenureMonths, compounding) -
-    principal;
-  return Math.round((earned + Number.EPSILON) * 100) / 100;
+  // compare against the unrounded maturity value, not maturityValue()'s
+  // rounded result, otherwise near-zero interest can round to -0
+  const rawMaturity = rawMaturityValue(
+    principal,
+    annualRatePercent,
+    tenureMonths,
+    compounding,
+  );
+  const earned = rawMaturity - principal;
+  return Math.round((earned + Number.EPSILON) * 100) / 100 || 0;
 }
 
 // month-by-month balance, for charting. Includes month 0 (= principal)
