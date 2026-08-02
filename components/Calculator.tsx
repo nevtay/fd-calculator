@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import ChartVisualisation from "./ChartVisualisation";
 import {
   growthSeries,
   interestEarned as calculateInterestEarned,
@@ -13,6 +14,8 @@ export interface CompoundTypes {
   annually: "annually";
   maturity: "maturity";
 }
+
+export type GrowthSeries = { month: number; balance: number }[];
 
 const Calculator = () => {
   const compoundTypes = {
@@ -32,10 +35,17 @@ const Calculator = () => {
   const [formData, setFormData] = useState(defaultState);
   const [maturityValue, setMaturityValue] = useState("");
   const [interestEarned, setInterestEarned] = useState("");
+  const [growthSeriesData, setGrowthSeriesData] = useState<GrowthSeries>([
+    { month: 0, balance: 0 },
+  ]);
 
   const isValidNumber = (key: string, currentValue: string): boolean => {
-    if (/^\d$/.test(key)) return true;
-    if (key === "." && !currentValue.includes(".")) return true;
+    if (/^\d$/.test(key)) {
+      return true;
+    }
+    if (key === "." && !currentValue.includes(".")) {
+      return true;
+    }
     return false;
   };
 
@@ -43,7 +53,12 @@ const Calculator = () => {
   const sanitizeNumericInput = (value: string): string => {
     const digitsAndDots = value.replace(/[^\d.]/g, "");
     const firstDotIndex = digitsAndDots.indexOf(".");
-    if (firstDotIndex === -1) return digitsAndDots;
+    if (firstDotIndex === -1) {
+      return digitsAndDots;
+    }
+    if (firstDotIndex === 0 && value.length === 1) {
+      return "0" + value;
+    }
     return (
       digitsAndDots.slice(0, firstDotIndex + 1) +
       digitsAndDots.slice(firstDotIndex + 1).replace(/\./g, "")
@@ -132,9 +147,18 @@ const Calculator = () => {
     if (!formData.principal || !formData.annualRate || !formData.tenureLength) {
       setMaturityValue("-");
       setInterestEarned("-");
+      setGrowthSeriesData([{ month: 0, balance: 0 }]);
     } else {
       getInterestEarned();
       getMaturityValue();
+
+      const growthSeriesData = growthSeries(
+        Number(principal),
+        Number(annualRate),
+        Number(tenureLength),
+        compoundType,
+      );
+      setGrowthSeriesData(growthSeriesData);
     }
   }, [
     formData.principal,
@@ -143,20 +167,18 @@ const Calculator = () => {
     formData.compoundType,
   ]);
 
+  console.log("interestEarned", interestEarned);
+
   return (
     <>
-      <form className="flex flex-row flex-wrap gap-12.5">
-        <div className="bg-input-container flex w-4/12 flex-col justify-evenly gap-3 rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:w-12/12">
+      <form className="items-between flex flex-row flex-wrap gap-x-10 gap-y-5">
+        <div className="bg-input-container flex w-5/12 flex-col justify-between gap-3 rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:w-12/12">
           <label
             className="text-[24px] font-semibold text-(--color-indigo) text-shadow-[.6px_.60px_0.25px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
             htmlFor="principal"
           >
             Principal
           </label>
-          <label
-            className="text-[24px] font-semibold text-(--color-indigo) text-shadow-[.6px_.60px_0.25px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
-            htmlFor="principal"
-          ></label>
           <input
             className="text-input-value border-b-2 bg-none outline-0 text-shadow-[-1px_-1px_1px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
             title="principal"
@@ -170,7 +192,7 @@ const Calculator = () => {
             }}
           />
         </div>
-        <div className="bg-input-container flex w-auto flex-col justify-evenly gap-3 rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:w-12/12">
+        <div className="bg-input-container flex w-5/12 flex-col justify-between gap-3 rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:w-12/12">
           <label
             className="text-[24px] font-semibold text-(--color-indigo) text-shadow-[.6px_.60px_0.25px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
             htmlFor="tenureLength"
@@ -182,6 +204,8 @@ const Calculator = () => {
             title="tenureLength"
             name="tenureLength"
             type="text"
+            maxLength={3}
+            max={360}
             inputMode="numeric"
             value={formData.tenureLength}
             onKeyDown={handleKeyDown}
@@ -190,7 +214,7 @@ const Calculator = () => {
             }}
           />
         </div>
-        <div className="bg-input-container flex w-auto flex-col justify-evenly gap-3 rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:w-12/12">
+        <div className="bg-input-container flex w-5/12 flex-col justify-between gap-3 rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:w-12/12">
           <label
             className="text-[24px] font-semibold text-(--color-indigo) text-shadow-[.6px_.60px_0.25px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
             htmlFor="annualRate"
@@ -203,6 +227,7 @@ const Calculator = () => {
             name="annualRate"
             type="text"
             inputMode="numeric"
+            maxLength={3}
             value={formData.annualRate}
             onKeyDown={handleKeyDown}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -210,7 +235,7 @@ const Calculator = () => {
             }}
           />
         </div>
-        <div className="bg-input-container flex min-w-auto flex-col justify-evenly gap-3 rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:w-12/12">
+        <div className="bg-input-container flex w-5/12 flex-col justify-between gap-3 rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:w-12/12">
           <label
             className="text-[24px] font-semibold text-(--color-indigo) text-shadow-[.6px_.60px_0.25px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
             htmlFor="compoundType"
@@ -247,8 +272,8 @@ const Calculator = () => {
             </svg>
           </div>
         </div>
-        <div className="bg-input-container flex w-5/12 items-center rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:w-12/12">
-          <div className="min-w-7/12 text-(--color-body-text) text-shadow-[-1px_-1px_1px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]">
+        <div className="bg-input-container flex w-12/12 flex-col justify-evenly gap-3 rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:w-12/12">
+          <div className="min-w-12/12 text-(--color-body-text) text-shadow-[-1px_-1px_1px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]">
             <h1 className="text-[24px] font-semibold text-(--color-indigo) text-shadow-[.6px_.60px_0.25px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]">
               <u>Summary</u>
             </h1>
@@ -259,6 +284,7 @@ const Calculator = () => {
               Interest Earned: {interestEarned ? interestEarned : "-"}
             </h1>
           </div>
+          <ChartVisualisation growthSeriesData={growthSeriesData} />
         </div>
         <div className="m-auto mb-8 flex w-12/12">
           <button
