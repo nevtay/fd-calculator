@@ -1,14 +1,4 @@
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid,
-  PolarGrid,
-  Brush,
-  Label,
-} from "recharts";
+import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from "recharts";
 import { GrowthSeries } from "./Calculator";
 
 interface ChartVisualisationProps {
@@ -18,66 +8,70 @@ interface ChartVisualisationProps {
 const ChartVisualisation = ({ growthSeriesData }: ChartVisualisationProps) => {
   return (
     <div className="rounded-lg p-4">
-      <LineChart
-        width={"100%"}
-        height={300}
-        responsive
+      <BarChart
         data={growthSeriesData}
+        height={300}
         margin={{ top: 0, right: 0, left: 0, bottom: 20 }}
+        responsive
+        width={"100%"}
       >
         <CartesianGrid strokeDasharray="2 2" />
         <YAxis
           dataKey="balance"
           domain={[growthSeriesData[0]?.balance ?? 0, "dataMax"]}
-          width={90}
-          tickFormatter={(value: number) =>
-            value.toLocaleString("en-US", { maximumFractionDigits: 0 })
-          }
-          tick={{ fill: "var(--color-body-text)" }}
           label={{
+            angle: -90,
             dataKey: "Balance",
             fill: "var(--color-body-text)",
             fontWeight: 500,
-            value: "Balance",
-            angle: -90,
             position: "insideLeft",
             textAnchor: "middle",
+            value: "Balance",
           }}
+          tick={{ fill: "var(--color-body-text)" }}
+          tickFormatter={(value: number) =>
+            value.toLocaleString("en-US", { maximumFractionDigits: 0 })
+          }
+          width={90}
         />
         <XAxis
           dataKey="month"
-          tick={{ fill: "var(--color-body-text)" }}
           label={{
             dataKey: "month",
             fill: "var(--color-body-text)",
             fontWeight: 500,
-            value: "Month",
-            position: "insideBottom",
             offset: -20,
+            position: "insideBottom",
             textAnchor: "middle",
+            value: "Month",
           }}
+          tick={{ fill: "var(--color-body-text)" }}
         />
         <Tooltip
-          labelFormatter={(label) => (
-            <>
-              <b>Month:</b> {label}
-            </>
-          )}
-
-          itemStyle={{ fontWeight: "bold" }}
           contentStyle={{
-            color: "#6366F1",
             backgroundColor: "darkgrey",
             borderColor: "none",
+            color: "#6366F1",
           }}
+          cursor={growthSeriesData.length > 1 ? true : false}
+          formatter={(value) =>
+            typeof value === "number"
+              ? value.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              : value
+          }
+          itemStyle={{ fontWeight: "bold" }}
+          labelFormatter={(label) => (
+            <>
+              <b>Month:</b> <b>{label}</b>
+            </>
+          )}
+          separator=": "
         />
-        <Line
-          type="natural"
-          dataKey="balance"
-          stroke="#6366F1"
-          strokeWidth={3}
-        />
-      </LineChart>
+        <Bar dataKey="balance" fill="#6366F1" name="Balance" />
+      </BarChart>
     </div>
   );
 };
