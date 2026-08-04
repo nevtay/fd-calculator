@@ -28,6 +28,7 @@ export function ThemeToggle() {
       className={`skeo-track ${isDark ? "is-dark" : "is-light"} top-[5] right-[10]`}
       onClick={handleToggle}
       role="switch"
+      aria-checked={isDark}
       aria-label="Toggle Theme"
       tabIndex={0}
       onKeyDown={(e) => e.key === "Enter" && handleToggle()}
