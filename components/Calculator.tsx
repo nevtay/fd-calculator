@@ -30,18 +30,29 @@ const Calculator = () => {
     { month: 0, balance: 0 },
   ]);
 
-  const isValidNumber = (key: string, currentValue: string): boolean => {
+  const isValidNumber = (
+    key: string,
+    currentValue: string,
+    allowDecimal: boolean,
+  ): boolean => {
     if (/^\d$/.test(key)) {
       return true;
     }
-    if (key === "." && !currentValue.includes(".")) {
+    if (allowDecimal && key === "." && !currentValue.includes(".")) {
       return true;
     }
     return false;
   };
 
-  // sanitize the resulting value so it's digits only, at most one decimal point.
-  const sanitizeNumericInput = (value: string): string => {
+  // sanitize the resulting value so it's digits only, at most one decimal
+  // point (or no decimal point at all when allowDecimal is false).
+  const sanitizeNumericInput = (
+    value: string,
+    allowDecimal: boolean,
+  ): string => {
+    if (!allowDecimal) {
+      return value.replace(/[^\d]/g, "");
+    }
     const digitsAndDots = value.replace(/[^\d.]/g, "");
     const firstDotIndex = digitsAndDots.indexOf(".");
     if (firstDotIndex === -1) {
@@ -67,10 +78,13 @@ const Calculator = () => {
       "End",
     ];
     const isSelectAll = (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "a";
+    const isRefresh = (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "r";
+    const allowDecimal = e.currentTarget.name !== "tenureLength";
     if (
       !isSelectAll &&
+      !isRefresh &&
       !allowedKeys.includes(e.key) &&
-      !isValidNumber(e.key, e.currentTarget.value)
+      !isValidNumber(e.key, e.currentTarget.value, allowDecimal)
     ) {
       e.preventDefault();
     }
@@ -82,7 +96,7 @@ const Calculator = () => {
     const { name, value } = e.target;
     const sanitizedValue =
       e.target instanceof HTMLInputElement
-        ? sanitizeNumericInput(value)
+        ? sanitizeNumericInput(value, name !== "tenureLength")
         : value;
     setFormData((prev) => ({ ...prev, [name]: sanitizedValue }));
   };
