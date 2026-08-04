@@ -3,7 +3,7 @@ import { ChartVisualisationProps } from "@/lib/types";
 
 const ChartVisualisation = ({ growthSeriesData }: ChartVisualisationProps) => {
   return (
-    <div className="ml-[-20] rounded-lg">
+    <div className="rounded-lg">
       <BarChart
         data={growthSeriesData}
         height={300}
@@ -18,7 +18,7 @@ const ChartVisualisation = ({ growthSeriesData }: ChartVisualisationProps) => {
           label={{
             angle: -90,
             dataKey: "Balance",
-            dx: 25,
+            dx: 1,
             fill: "var(--color-indigo)",
             fontSize: 18,
             fontWeight: 500,
