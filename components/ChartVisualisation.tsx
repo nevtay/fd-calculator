@@ -3,7 +3,7 @@ import { ChartVisualisationProps } from "@/lib/types";
 
 const ChartVisualisation = ({ growthSeriesData }: ChartVisualisationProps) => {
   return (
-    <div className="rounded-lg p-4">
+    <div className="ml-[-20] rounded-lg">
       <BarChart
         data={growthSeriesData}
         height={300}
@@ -18,7 +18,9 @@ const ChartVisualisation = ({ growthSeriesData }: ChartVisualisationProps) => {
           label={{
             angle: -90,
             dataKey: "Balance",
-            fill: "var(--color-body-text)",
+            dx: 25,
+            fill: "var(--color-indigo)",
+            fontSize: 18,
             fontWeight: 500,
             position: "insideLeft",
             textAnchor: "middle",
@@ -34,7 +36,8 @@ const ChartVisualisation = ({ growthSeriesData }: ChartVisualisationProps) => {
           dataKey="month"
           label={{
             dataKey: "month",
-            fill: "var(--color-body-text)",
+            fill: "var(--color-indigo)",
+            fontSize: 18,
             fontWeight: 500,
             offset: -20,
             position: "insideBottom",
