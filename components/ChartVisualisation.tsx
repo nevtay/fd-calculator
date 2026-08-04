@@ -1,9 +1,5 @@
 import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from "recharts";
-import { GrowthSeries } from "./Calculator";
-
-interface ChartVisualisationProps {
-  growthSeriesData: GrowthSeries;
-}
+import { ChartVisualisationProps } from "@/lib/types";
 
 const ChartVisualisation = ({ growthSeriesData }: ChartVisualisationProps) => {
   return (

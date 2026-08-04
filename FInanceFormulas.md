@@ -11,10 +11,10 @@ To have a visually beautiful curve while maintaining absolute mathematical corre
 
 <h2>Production-Ready Implementation</h2>
 
-For the updated `growthSeries` function, it's paired with an updated `maturityValue` function to ensure your single-value calculation and chart data align exactly
+The formulas live in `lib/utils/finance.ts`, with the shared `Compounding` type now defined once in `lib/types.ts` and imported here. A private `rawMaturityValue` helper holds the unrounded math so both `maturityValue` and `interestEarned` can share it without double-rounding drift; `growthSeries` is paired with `maturityValue` to ensure your single-value calculation and chart data align exactly.
 
 ```ts
-export type Compounding = "monthly" | "quarterly" | "annually" | "maturity";
+import { Compounding } from "../types";
 
 const periodsPerYear: Record<Exclude<Compounding, "maturity">, number> = {
   monthly: 12,
@@ -22,40 +22,60 @@ const periodsPerYear: Record<Exclude<Compounding, "maturity">, number> = {
   annually: 1,
 };
 
-// Calculates exact banking maturity value handling partial final periods
-export function maturityValue(
+function rawMaturityValue(
   principal: number,
   annualRatePercent: number,
   tenureMonths: number,
   compounding: Compounding,
 ): number {
   const r = annualRatePercent / 100;
+  const t = tenureMonths / 12;
 
   if (compounding === "maturity") {
-    const raw = principal * (1 + r * (tenureMonths / 12));
-    return Math.round((raw + Number.EPSILON) * 100) / 100;
+    return principal * (1 + r * t);
   }
-
   const n = periodsPerYear[compounding];
-  const monthsPerPeriod = 12 / n;
+  return principal * Math.pow(1 + r / n, n * t);
+}
 
-  // 1. Identify completed full compounding chunks
-  const completedPeriods = Math.floor(tenureMonths / monthsPerPeriod);
-  const compoundedMonths = completedPeriods * monthsPerPeriod;
+// final value of the deposit at end of tenure
+export function maturityValue(
+  principal: number,
+  annualRatePercent: number,
+  tenureMonths: number,
+  compounding: Compounding,
+): number {
+  const rawMaturity = rawMaturityValue(
+    principal,
+    annualRatePercent,
+    tenureMonths,
+    compounding,
+  );
 
-  // 2. Compound interest for completed periods
-  const balanceAfterCompounding =
-    principal * Math.pow(1 + r / n, completedPeriods);
-
-  // 3. Simple interest for remaining partial months
-  const remainingMonths = tenureMonths - compoundedMonths;
-  const rawMaturity =
-    balanceAfterCompounding * (1 + r * (remainingMonths / 12));
-
+  // fix floating-point issues by rounding to 2 decimal places
   return Math.round((rawMaturity + Number.EPSILON) * 100) / 100;
 }
 
-// Generates a smooth, visually pleasing curve for UI charts
+// interest earned over tenure
+export function interestEarned(
+  principal: number,
+  annualRatePercent: number,
+  tenureMonths: number,
+  compounding: Compounding,
+): number {
+  // compare against the unrounded maturity value, not maturityValue()'s
+  // rounded result, otherwise near-zero interest can round to -0
+  const rawMaturity = rawMaturityValue(
+    principal,
+    annualRatePercent,
+    tenureMonths,
+    compounding,
+  );
+  const earned = rawMaturity - principal;
+  return Math.round((earned + Number.EPSILON) * 100) / 100 || 0;
+}
+
+// month-by-month balance, for charting. Includes month 0 (= principal)
 export function growthSeries(
   principal: number,
   annualRatePercent: number,
@@ -68,9 +88,9 @@ export function growthSeries(
   for (let m = 0; m <= tenureMonths; m++) {
     let balance: number;
 
-    // Is this the absolute final month of the timeline?
+    // for absolute final month of the timeline
     if (m === tenureMonths) {
-      // Use the precise banking method for the endpoint
+      // use the precise banking method for the endpoint
       balance = maturityValue(
         principal,
         annualRatePercent,
@@ -81,12 +101,12 @@ export function growthSeries(
       continue;
     }
 
-    // Intermediate months generate a smooth curve for better UI styling
+    // intermediate months generate a smooth curve for better UI styling
     if (compounding === "maturity") {
       balance = principal * (1 + r * (m / 12));
     } else {
       const n = periodsPerYear[compounding];
-      // Fractional years create the perfect curve for Recharts / Chart.js
+      // fractional years create the perfect curve for Recharts / Chart.js
       const fractionalYears = m / 12;
       balance = principal * Math.pow(1 + r / n, n * fractionalYears);
     }
@@ -106,3 +126,4 @@ export function growthSeries(
 - Visually Pleasing Line Charts: Libraries like Recharts, Chart.js, or ApexCharts will render a gorgeous, smooth upward slope instead of ugly vertical jumps.
 - No Fractional Exponent Bugs at Maturity: If a user runs a 7-month tenure with quarterly compounding at 12% interest on $10,000, Month 6 maps perfectly to the 2nd quarter compound, and Month 7 smoothly glides to the precise hybrid banking value of $10,715.09 (instead of a raw fractional exponent value of $10,715.19).
 - Guaranteed Alignment: Your summary card data (maturityValue()) will always exactly match the final node on your chart timeline graph (growthSeries()).
+- No More "-0.00": `interestEarned()` used to subtract the raw principal from `maturityValue()`'s already-rounded result, so near-zero interest could round down to negative zero and display as "-0.00". It now derives interest from the same unrounded `rawMaturityValue()` used internally by `maturityValue()`, rounding only once at the end.

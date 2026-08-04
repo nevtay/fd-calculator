@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { type Compounding } from "./finance";
+import { type Compounding } from "../types";
 
 interface SavedCalc {
   id: string;

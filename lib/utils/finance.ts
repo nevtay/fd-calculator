@@ -1,4 +1,4 @@
-export type Compounding = "monthly" | "quarterly" | "annually" | "maturity";
+import { Compounding } from "../types";
 
 const periodsPerYear: Record<Exclude<Compounding, "maturity">, number> = {
   monthly: 12,

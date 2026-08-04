@@ -5,17 +5,8 @@ import {
   growthSeries,
   interestEarned as calculateInterestEarned,
   maturityValue as calculateMaturityValue,
-  Compounding,
-} from "@/lib/finance";
-
-export interface CompoundTypes {
-  monthly: "monthly";
-  quarterly: "quarterly";
-  annually: "annually";
-  maturity: "maturity";
-}
-
-export type GrowthSeries = { month: number; balance: number }[];
+} from "@/lib/utils/finance";
+import { type Compounding, CompoundTypes, GrowthSeries } from "@/lib/types";
 
 const Calculator = () => {
   const compoundTypes = {
