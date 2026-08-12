@@ -172,12 +172,10 @@ const Calculator = () => {
     formData.compoundType,
   ]);
 
-  console.log("interestEarned", interestEarned);
-
   return (
     <>
-      <form className="items-between flex flex-row flex-wrap gap-x-10 gap-y-5">
-        <div className="bg-input-container flex w-5/12 flex-col justify-between gap-3 rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:w-12/12">
+      <form className="flex flex-row flex-wrap gap-x-5 gap-y-10">
+        <div className="bg-input-container flex w-4/12 flex-col justify-between gap-3 rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:w-12/12">
           <label
             className="text-[24px] font-semibold text-(--color-indigo) text-shadow-[.6px_.60px_0.25px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
             htmlFor="principal"
@@ -198,7 +196,7 @@ const Calculator = () => {
             }}
           />
         </div>
-        <div className="bg-input-container flex w-5/12 flex-col justify-between gap-3 rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:w-12/12">
+        <div className="bg-input-container flex w-4/12 flex-col justify-between gap-3 rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:h-30 max-md:w-12/12">
           <label
             className="text-[24px] font-semibold text-(--color-indigo) text-shadow-[.6px_.60px_0.25px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
             htmlFor="tenureLength"
@@ -219,7 +217,7 @@ const Calculator = () => {
             }}
           />
         </div>
-        <div className="bg-input-container flex w-5/12 flex-col justify-between gap-3 rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:w-12/12">
+        <div className="bg-input-container flex w-3/12 flex-col justify-between rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:w-12/12 md:flex-1 lg:w-4/12">
           <label
             className="text-[24px] font-semibold text-(--color-indigo) text-shadow-[.6px_.60px_0.25px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
             htmlFor="annualRate"
@@ -240,7 +238,7 @@ const Calculator = () => {
             }}
           />
         </div>
-        <div className="bg-input-container flex w-5/12 flex-col justify-between gap-3 rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:w-12/12">
+        <div className="bg-input-container flex w-3/12 flex-col justify-between gap-3 self-start rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)] max-md:w-12/12">
           <label
             className="text-[24px] font-semibold text-(--color-indigo) text-shadow-[.6px_.60px_0.25px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
             htmlFor="compoundType"
@@ -277,7 +275,7 @@ const Calculator = () => {
             </svg>
           </div>
         </div>
-        <div className="bg-input-container flex w-12/12 flex-col justify-evenly gap-3 rounded-3xl px-5 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] max-md:w-12/12">
+        <div className="bg-input-container flex flex-1 flex-col justify-evenly gap-3 rounded-3xl px-4 pt-3.5 pb-6 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] max-md:w-12/12">
           <div className="min-w-12/12 text-(--color-body-text) text-shadow-[-1px_-1px_1px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]">
             <h1 className="text-[24px] font-semibold text-(--color-indigo) text-shadow-[.6px_.60px_0.25px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]">
               <u>Summary</u>
@@ -293,7 +291,7 @@ const Calculator = () => {
         </div>
         <div className="m-auto mb-8 flex w-12/12">
           <button
-            className="bg-input-container m-auto h-fit w-auto cursor-pointer rounded-2xl px-6 py-2 text-(--color-body-text) shadow-[-0px_-0px_4px_var(--skeu-shadow),4px_4px_4px_var(--skeu-shadow)] text-shadow-[.6px_.60px_0.25px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)] hover:scale-90 md:ml-auto"
+            className="bg-input-container m-auto h-fit w-auto cursor-pointer rounded-2xl px-6 py-2 text-(--color-body-text) shadow-[-0px_-0px_4px_var(--skeu-shadow),4px_4px_4px_var(--skeu-shadow)] text-shadow-[.6px_.60px_0.25px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)] hover:scale-90 sm:mb-5 md:mb-0 md:ml-auto"
             type="reset"
             name="Reset"
             onClick={handleReset}
