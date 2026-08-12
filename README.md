@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Fixed Deposit Calculator
+
+A calculator for estimating the maturity value and interest earned on a fixed deposit, with a chart visualizing balance growth over the deposit's tenure.
+
+**Live site:** https://nevtay.github.io/fd-calculator/
+
+## Features
+
+- Calculates maturity value and interest earned from principal, annual interest rate, tenure (in months), and compounding frequency (monthly, quarterly, annually, or simple interest at maturity)
+- Uses a hybrid compound/simple-interest formula so results match real-world bank calculations for tenures that don't land on a whole compounding period (see `FInanceFormulas.md`)
+- Bar chart (via Recharts) plotting balance growth month-by-month across the tenure
+- Light/dark theme toggle with persisted preference
+- Sanitized numeric inputs (digits only, single decimal point where applicable) and a form reset
+- Responsive, skeuomorphic-styled UI built with Tailwind CSS
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org) (App Router, static export) with [React](https://react.dev) and TypeScript
+- [Tailwind CSS](https://tailwindcss.com) for styling
+- [Recharts](https://recharts.org) for the growth chart
+- [next-themes](https://github.com/pacocoursey/next-themes) for light/dark mode
+- [Zustand](https://zustand-demo.pmnd.rs) for state management
+- [Jest](https://jestjs.io) for unit tests
+- Deployed to GitHub Pages via GitHub Actions
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies and run the development server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser. The page auto-updates as you edit `app/page.tsx` or `components/`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Other Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build          # static export build (output: "out/")
+npm start               # serve the production build
+npm run lint            # lint the codebase
+npm test                # run the Jest test suite
+npm run test:coverage   # run tests with coverage report
+```
 
-## Learn More
+## Deployment
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The site is built as a static export (`next.config.ts` sets `output: "export"`) and deployed to GitHub Pages by the `Deploy Next.js site to Pages` workflow in `.github/workflows/nextjs.yml`.
