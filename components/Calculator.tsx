@@ -99,6 +99,11 @@ const Calculator = () => {
         ? sanitizeNumericInput(value, name !== "tenureLength")
         : value;
 
+    if (name === "tenureLength") {
+      if (Number(sanitizedValue) > 120) {
+        sanitizedValue = "120";
+      }
+    }
     if (name === "annualRate") {
       const dotIndex = sanitizedValue.indexOf(".");
       if (dotIndex !== -1 && sanitizedValue.length - dotIndex - 1 > 3) {
@@ -215,10 +220,10 @@ const Calculator = () => {
             Tenure Length (months)
           </label>
           <input
-            className="text-input-value border-b-2 bg-none outline-0 text-shadow-[-1px_-1px_1px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
+            className="text-input-value [appearance:textfield] border-b-2 bg-none outline-0 text-shadow-[-1px_-1px_1px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
             title="tenureLength"
             name="tenureLength"
-            type="text"
+            type="number"
             maxLength={2}
             inputMode="numeric"
             value={formData.tenureLength}
@@ -236,7 +241,7 @@ const Calculator = () => {
             Annual Rate (%)
           </label>
           <input
-            className="text-input-value border-b-2 bg-none outline-0 text-shadow-[-1px_-1px_1px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
+            className="text-input-value [appearance:textfield] border-b-2 bg-none outline-0 text-shadow-[-1px_-1px_1px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
             title="annualRate"
             name="annualRate"
             type="number"
