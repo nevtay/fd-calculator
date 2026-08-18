@@ -94,10 +94,21 @@ const Calculator = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
-    const sanitizedValue =
+    let sanitizedValue =
       e.target instanceof HTMLInputElement
         ? sanitizeNumericInput(value, name !== "tenureLength")
         : value;
+
+    if (name === "annualRate") {
+      const dotIndex = sanitizedValue.indexOf(".");
+      if (dotIndex !== -1 && sanitizedValue.length - dotIndex - 1 > 3) {
+        sanitizedValue = sanitizedValue.slice(0, dotIndex + 4);
+      }
+      if (Number(sanitizedValue) > 999) {
+        sanitizedValue = "999";
+      }
+    }
+
     setFormData((prev) => ({ ...prev, [name]: sanitizedValue }));
   };
 
@@ -228,9 +239,10 @@ const Calculator = () => {
             className="text-input-value border-b-2 bg-none outline-0 text-shadow-[-1px_-1px_1px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
             title="annualRate"
             name="annualRate"
-            type="text"
-            inputMode="numeric"
+            type="number"
+            max={999}
             maxLength={5}
+            inputMode="numeric"
             value={formData.annualRate}
             onKeyDown={handleKeyDown}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
