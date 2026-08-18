@@ -34,7 +34,7 @@ export function ThemeToggle() {
       onKeyDown={(e) => e.key === "Enter" && handleToggle()}
     >
       <div className="skeo-thumb">
-        <div className="skeo-thumb-inner">
+        <div className="skeo-thumb-inner select-none">
           {resolvedTheme?.toLowerCase() === "dark" ? "🌑" : "☀️"}
         </div>
       </div>
