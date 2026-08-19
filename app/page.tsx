@@ -1,4 +1,6 @@
+"use client";
 import Calculator from "@/components/Calculator";
+import SavedEntries from "@/components/SavedEntries";
 import { ThemeToggle } from "@/components/Theme/ThemeToggle";
 
 export default function Home() {
@@ -14,6 +16,7 @@ export default function Home() {
               <ThemeToggle />
             </div>
           </div>
+          <SavedEntries />
         </div>
         <Calculator />
       </div>
