@@ -170,7 +170,7 @@ const Calculator = () => {
 
   useEffect(() => {
     if (Object.keys(currentEntry).includes("id")) {
-      setFormData(currentEntry);
+      setFormData({ ...currentEntry });
     }
   }, [currentEntry]);
 
@@ -275,7 +275,7 @@ const Calculator = () => {
           <div className="relative">
             <select
               name="compoundType"
-              defaultValue={formData.compoundType}
+              value={formData.compoundType}
               className="text-input-value m-0 w-full appearance-none border-b-2 pr-8 outline-0 text-shadow-[-1px_-1px_1px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]"
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 handleChange(e);
