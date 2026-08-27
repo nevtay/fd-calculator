@@ -11,6 +11,7 @@ import useEntriesStore from "@/store/useEntriesStore";
 
 const Calculator = () => {
   const saveEntry = useEntriesStore((s: any) => s.addEntry);
+  const currentEntry = useEntriesStore((s: any) => s.currentEntry);
 
   const compoundTypes = {
     monthly: "monthly",
@@ -166,6 +167,12 @@ const Calculator = () => {
       setInterestEarned(result);
     }
   };
+
+  useEffect(() => {
+    if (Object.keys(currentEntry).includes("id")) {
+      setFormData(currentEntry);
+    }
+  }, [currentEntry]);
 
   useEffect(() => {
     if (!formData.principal || !formData.annualRate || !formData.tenureLength) {
