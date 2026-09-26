@@ -244,7 +244,15 @@ const Calculator = () => {
             className="bg-input-container m-auto h-fit w-auto cursor-pointer rounded-2xl px-6 py-2 text-(--color-body-text) shadow-[-0px_-0px_4px_var(--skeu-shadow),4px_4px_4px_var(--skeu-shadow)] text-shadow-[.6px_.60px_0.25px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)] hover:scale-90 sm:mb-5 md:mb-0 md:ml-auto"
             type="reset"
             name="Reset"
-            onClick={() => saveEntry(formData)}
+            onClick={() => {
+              const { annualRate, compoundType, tenureLength, principal } =
+                formData;
+              if (!annualRate || !compoundType || !tenureLength || !principal) {
+                return;
+              } else {
+                saveEntry(formData);
+              }
+            }}
           >
             Save Results
           </button>

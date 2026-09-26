@@ -1,10 +1,10 @@
-export type CalculationEntry = {
+export interface CalculationEntry {
   principal: number;
   tenureLength: number;
   annualRate: number;
   compoundType: Compounding;
   id: string;
-};
+}
 export type Compounding = "monthly" | "quarterly" | "annually" | "maturity";
 export interface CompoundTypes {
   monthly: "monthly";
