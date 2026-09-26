@@ -12,11 +12,20 @@ const SavedEntries = () => {
           entries.map((entry: CalculationEntry) => (
             <div
               key={entry.id}
-              className="bg-input-container relative flex aspect-square w-28 cursor-pointer flex-col items-center justify-center rounded-3xl px-3 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)]"
+              className="bg-input-container relative flex aspect-square min-w-28 cursor-pointer flex-col items-center justify-center rounded-3xl px-3 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)]"
               onClick={() => setCurrentEntry(entry)}
             >
-              <h2 className="text-input-value line-clamp-3 text-center text-xs break-all text-shadow-[-1px_-1px_1px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]">
-                {entry.id}
+              <h2 className="text-input-value text-center text-xs break-all text-shadow-[-1px_-1px_1px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]">
+                Principal: {Number(entry.principal).toFixed(2) || 0}
+                <br /> Tenure: {entry.tenureLength || 0} months
+                <br /> Annual Rate: {entry?.annualRate}%
+                <br /> Compound Type:{" "}
+                {entry.compoundType
+                  .split("")
+                  .map((letter, idx) => {
+                    return idx === 0 ? (letter = letter.toUpperCase()) : letter;
+                  })
+                  .join("")}
               </h2>
               <button
                 type="button"
