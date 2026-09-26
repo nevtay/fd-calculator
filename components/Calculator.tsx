@@ -173,7 +173,7 @@ const Calculator = () => {
   };
 
   useEffect(() => {
-    if (Object.keys(currentEntry).includes("id")) {
+    if (currentEntry && Object.keys(currentEntry).includes("id")) {
       setFormData({ ...currentEntry });
     }
   }, [currentEntry]);
