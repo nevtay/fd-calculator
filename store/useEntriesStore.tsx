@@ -7,12 +7,9 @@ const useEntriesStore = create((set) => ({
   addEntry: (entry: CalculationEntry) => {
     set((state: any) => {
       const newEntry = { ...entry, id: crypto.randomUUID() };
-      const updatedEntries = [...state.entries];
-      if (state.entries.length > 2) {
-        updatedEntries.push(newEntry);
-        updatedEntries.pop();
-      } else {
-        updatedEntries.push(newEntry);
+      const updatedEntries = [...state.entries, newEntry];
+      if (updatedEntries.length > 2) {
+        updatedEntries.shift();
       }
       return { entries: updatedEntries };
     });
@@ -29,8 +26,7 @@ const useEntriesStore = create((set) => ({
       );
       return {
         entries: updatedEntries,
-        currentEntry:
-          id === state?.currentEntry?.id ? null : state?.currentEntry,
+        currentEntry: id === state?.currentEntry?.id ? {} : state?.currentEntry,
       };
     });
   },
