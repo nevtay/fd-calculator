@@ -5,17 +5,26 @@ import PrincipalInput from "./CalculatorInputs/PrincipalInput";
 import TenureLengthInput from "./CalculatorInputs/TenureLengthInput";
 import AnnualRateInput from "./CalculatorInputs/AnnualRateInput";
 import CompoundTypeSelect from "./CalculatorInputs/CompoundTypeSelect";
+import SavedEntries from "./SavedEntries";
 import {
   growthSeries,
   interestEarned as calculateInterestEarned,
   maturityValue as calculateMaturityValue,
 } from "@/lib/utils/finance";
-import { type Compounding, CompoundTypes, GrowthSeries } from "@/lib/types";
+import {
+  CalculationEntry,
+  type Compounding,
+  CompoundTypes,
+  GrowthSeries,
+} from "@/lib/types";
+
 import useEntriesStore from "@/store/useEntriesStore";
+import { MAX_SAVED_ENTRIES } from "@/store/useEntriesStore";
 
 const Calculator = () => {
   const saveEntry = useEntriesStore((s: any) => s.addEntry);
   const currentEntry = useEntriesStore((s: any) => s.currentEntry);
+  const entries = useEntriesStore((s: any) => s.entries) as CalculationEntry[];
 
   const compoundTypes = {
     monthly: "monthly",
@@ -234,16 +243,25 @@ const Calculator = () => {
               Maturity value: {maturityValue ? maturityValue : "-"}
             </h1>
             <h1 className="text-(--color-body-text)">
-              Interest Earned: {interestEarned ? interestEarned : "-"}
+              Total Interest Earned: {interestEarned ? interestEarned : "-"}
             </h1>
+            {entries.length !== 0 && (
+              <div className="m-auto mt-5 mb-3 flex flex-col">
+                <h1 className="text(--color-indigo) mb-5 text-center font-semibold">
+                  Saved Entries
+                </h1>
+                <SavedEntries />
+              </div>
+            )}
           </div>
           <ChartVisualisation growthSeriesData={growthSeriesData} />
         </div>
         <div className="m-auto mb-8 flex w-12/12">
           <button
-            className="bg-input-container m-auto h-fit w-auto cursor-pointer rounded-2xl px-6 py-2 text-(--color-body-text) shadow-[-0px_-0px_4px_var(--skeu-shadow),4px_4px_4px_var(--skeu-shadow)] text-shadow-[.6px_.60px_0.25px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)] hover:scale-90 sm:mb-5 md:mb-0 md:ml-auto"
+            className="bg-input-container m-auto h-fit w-auto cursor-pointer rounded-2xl px-6 py-2 text-(--color-body-text) shadow-[-0px_-0px_4px_var(--skeu-shadow),4px_4px_4px_var(--skeu-shadow)] text-shadow-[.6px_.60px_0.25px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)] hover:scale-90 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:scale-100 sm:mb-5 md:mb-0 md:ml-auto"
             type="reset"
             name="Reset"
+            disabled={entries && entries.length >= MAX_SAVED_ENTRIES}
             onClick={() => {
               const { annualRate, compoundType, tenureLength, principal } =
                 formData;
