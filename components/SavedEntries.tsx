@@ -1,10 +1,10 @@
 import useEntriesStore from "@/store/useEntriesStore";
-import { CalculationEntry } from "@/lib/types";
+import { CalculationEntry, EntriesStore } from "@/lib/types";
 
 const SavedEntries = () => {
-  const entries = useEntriesStore((s: any) => s.entries) as CalculationEntry[];
-  const removeEntry = useEntriesStore((s: any) => s.removeEntry);
-  const setCurrentEntry = useEntriesStore((s: any) => s.setCurrentEntry);
+  const entries = useEntriesStore((s: EntriesStore) => s.entries);
+  const removeEntry = useEntriesStore((s: EntriesStore) => s.removeEntry);
+  const setCurrentEntry = useEntriesStore((s: EntriesStore) => s.setCurrentEntry);
   return (
     <>
       <div className="mx-auto flex w-auto flex-row flex-wrap justify-center gap-8">
