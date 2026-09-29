@@ -12,10 +12,10 @@ const SavedEntries = () => {
           entries.map((entry: CalculationEntry) => (
             <div
               key={entry.id}
-              className="bg-input-container align relative flex aspect-square h-30 w-42 cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-indigo-400 px-0 shadow-[-4px_-4px_8px_var(--skeu-highlight),4px_4px_8px_var(--skeu-shadow)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight),2px_2px_4px_var(--skeu-shadow)]"
+              className="bg-input-container align relative flex aspect-square h-30 w-42 cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-indigo-400 px-0 shadow-[-4px_-4px_8px_var(--skeu-highlight-fixed),4px_4px_8px_var(--skeu-shadow-fixed)] transition-[scale,box-shadow] duration-200 ease-in-out hover:scale-95 hover:shadow-[-2px_-2px_4px_var(--skeu-highlight-fixed),2px_2px_4px_var(--skeu-shadow-fixed)]"
               onClick={() => setCurrentEntry(entry)}
             >
-              <div className="text-input-value flex w-auto flex-col px-2 text-center text-xs text-shadow-[-1px_-1px_1px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow)]">
+              <div className="text-input-value flex w-auto flex-col px-2 text-center text-xs text-shadow-[-1px_-1px_1px_var(--skeu-highlight-weak),1px_1px_2px_var(--skeu-shadow-fixed)]">
                 <span className="row-wrap flex items-center justify-between">
                   <span className="text-left font-bold text-(--color-indigo)">
                     Principal:
