@@ -12,9 +12,10 @@ import {
   maturityValue as calculateMaturityValue,
 } from "@/lib/utils/finance";
 import {
-  CalculationEntry,
+  type CalculatorFormData,
   type Compounding,
   CompoundTypes,
+  EntriesStore,
   GrowthSeries,
 } from "@/lib/types";
 
@@ -22,9 +23,9 @@ import useEntriesStore from "@/store/useEntriesStore";
 import { MAX_SAVED_ENTRIES } from "@/store/useEntriesStore";
 
 const Calculator = () => {
-  const saveEntry = useEntriesStore((s: any) => s.addEntry);
-  const currentEntry = useEntriesStore((s: any) => s.currentEntry);
-  const entries = useEntriesStore((s: any) => s.entries) as CalculationEntry[];
+  const saveEntry = useEntriesStore((s: EntriesStore) => s.addEntry);
+  const currentEntry = useEntriesStore((s: EntriesStore) => s.currentEntry);
+  const entries = useEntriesStore((s: EntriesStore) => s.entries);
 
   const compoundTypes = {
     monthly: "monthly",
@@ -33,14 +34,14 @@ const Calculator = () => {
     maturity: "maturity",
   } as CompoundTypes;
 
-  const defaultState = {
+  const defaultState: CalculatorFormData = {
     principal: "",
     annualRate: "",
     tenureLength: "",
     compoundType: compoundTypes.annually,
   };
 
-  const [formData, setFormData] = useState(defaultState);
+  const [formData, setFormData] = useState<CalculatorFormData>(defaultState);
   const [maturityValue, setMaturityValue] = useState("");
   const [interestEarned, setInterestEarned] = useState("");
   const [growthSeriesData, setGrowthSeriesData] = useState<GrowthSeries>([
@@ -182,7 +183,7 @@ const Calculator = () => {
   };
 
   useEffect(() => {
-    if (currentEntry && Object.keys(currentEntry).includes("id")) {
+    if (currentEntry) {
       setFormData({ ...currentEntry });
     }
   }, [currentEntry]);
